@@ -10,7 +10,7 @@
 This project was created to demonstrate the ease of interoperability of opencv-python with PyQt5, using beginner friendly code.
 
 It's a Motion Detector that detects motion using changes in colors of pixels.
-Although, only grayscale comparisons are used by default but this can easily be changed. More info in **[Notes](## Notes)**
+Although, only grayscale comparisons are used by default but this can easily be changed. More info in **[Notes](##Notes)**
 
 Explanatory code _Comments_ would added soon.
 
