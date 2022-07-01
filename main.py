@@ -22,7 +22,7 @@ os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.fspath(
 
 file_name = 'detected'
 cap = cv2.VideoCapture(0)
-comparison_mode = 'color'
+comparison_mode = 'grey'
 
 diff_thresh = 60
 amt_thresh = 10
