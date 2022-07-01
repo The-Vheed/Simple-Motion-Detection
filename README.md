@@ -42,13 +42,17 @@ Explanatory code _Comments_ would added soon.
 
 ## Notes
 
-- The output filename can be changed by changing the '_file_name_' variable in the '_main.py_' without adding any file extension;
+- The output filename can be changed by changing the '_file_name_' variable in line 16 of '_main.py_' without adding any file extension;
   ```python
   file_name = '<filename>'
   ```
 
 - The video source can be changed by giving the chosen camera index, video source file, or network stream in '_main.py_' in line 17;
     ```python
-    cap = cv2.VideoCapture('source')
+    cap = cv2.VideoCapture('<source>')
     ```
 
+- The frame comparison mode can also be changed to color comparison by changing the '_comparison_mode_' variable in line 18 from '_gray_' to '_color_';
+  ```python
+  comparison_mode = '<mode>'
+  ```

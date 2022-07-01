@@ -15,6 +15,7 @@ import pygame
 
 file_name = 'detected'
 cap = cv2.VideoCapture(0)
+comparison_mode = 'gray'
 
 
 diff_thresh = 60
@@ -42,30 +43,27 @@ class motiondetect(QtCore.QObject):
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         out = cv2.VideoWriter(str(file_name)+'.avi', fourcc, 30.0, (640, 480))
 
-        # ...some more of your code goes here...
-
         def difference(array1: np.array, array2: np.array):
             diffs = []
             list1 = array1.tolist()
             list2 = array2.tolist()
-            # r = 0
-            # g = 0
-            # b = 0
-            thresh = ui.diff_thresh_slider.sliderPosition()
-            for y in range(len(list1)):
-                for x in range(len(list1[y])):
-                    diff = abs(list1[y][x] - list2[y][x])
-                    # diff = abs(list1[y][x][0] - list2[y][x][0])+abs(list1[y][x][1] - list2[y][x][1])+abs(list1[y][x][2] - list2[y][x][2])
-                    # for c in range(array1.shape[2]):
-                    # if c == 0:
-                    #     b = abs(int(array1[x, y, c]) - int(array2[x, y, c]))
-                    # if c == 1:
-                    #     g = abs(int(array1[x, y, c]) - int(array2[x, y, c]))
-                    # if c == 2:
-                    #     r = abs(int(array1[x, y, c]) - int(array2[x, y, c]))
-                    # diff = b + g + r
-                    if diff > thresh:
-                        diffs.append([y, x])
+            if comparison_mode == 'gray':
+                thresh = ui.diff_thresh_slider.sliderPosition()
+                for y in range(len(list1)):
+                    for x in range(len(list1[y])):
+                        diff = abs(list1[y][x] - list2[y][x])
+                        if diff > thresh:
+                            diffs.append([y, x])
+            else:
+                r = 0
+                g = 0
+                b = 0
+                thresh = ui.diff_thresh_slider.sliderPosition()
+                for y in range(len(list1)):
+                    for x in range(len(list1[y])):
+                        diff = abs(list1[y][x][0] - list2[y][x][0])+abs(list1[y][x][1] - list2[y][x][1])+abs(list1[y][x][2] - list2[y][x][2])
+                        if diff > thresh:
+                            diffs.append([y, x])
 
             return np.array(diffs)
 
