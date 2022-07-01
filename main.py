@@ -22,7 +22,7 @@ os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.fspath(
 
 file_name = 'detected'
 cap = cv2.VideoCapture(0)
-comparison_mode = 'gray'
+comparison_mode = 'color'
 
 diff_thresh = 60
 amt_thresh = 10
@@ -54,7 +54,7 @@ class motiondetect(QtCore.QObject):
             diffs = []
             list1 = array1.tolist()
             list2 = array2.tolist()
-            if comparison_mode == 'gray':
+            if comparison_mode == 'color_modded':
                 thresh = ui.diff_thresh_slider.sliderPosition()
                 for y in range(len(list1)):
                     for x in range(len(list1[y])):
@@ -68,8 +68,16 @@ class motiondetect(QtCore.QObject):
                 thresh = ui.diff_thresh_slider.sliderPosition()
                 for y in range(len(list1)):
                     for x in range(len(list1[y])):
-                        diff = abs(list1[y][x][0] - list2[y][x][0]) + abs(list1[y][x][1] - list2[y][x][1]) + abs(
-                            list1[y][x][2] - list2[y][x][2])
+                        # diff = abs(list1[y][x] - list2[y][x])
+                        # diff = abs(list1[y][x][0] - list2[y][x][0])+abs(list1[y][x][1] - list2[y][x][1])+abs(list1[y][x][2] - list2[y][x][2])
+                        for c in range(array1.shape[2]):
+                            if c == 0:
+                                b = abs(int(array1[y, x, c]) - int(array2[y, x, c]))
+                            if c == 1:
+                                g = abs(int(array1[y, x, c]) - int(array2[y, x, c]))
+                            if c == 2:
+                                r = abs(int(array1[y, x, c]) - int(array2[y, x, c]))
+                        diff = b + g + r
                         if diff > thresh:
                             diffs.append([y, x])
 
@@ -109,18 +117,21 @@ class motiondetect(QtCore.QObject):
                 # Our operations on the frame come here
                 # Display the resulting frame
                 if ret:
-                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    if comparison_mode == 'grey':
+                        color_modded = cv2.cvtColor(frame, cv2.COLOR_BGR2color_modded)
+                    else:
+                        color_modded = frame.copy()
                     if count == 1:
                         count = 0
                         if type(prev) == int:
-                            prev = gray.copy()
+                            prev = color_modded.copy()
                             continue
-                        diff = difference(gray, prev)
+                        diff = difference(color_modded, prev)
                         std = 0
                         # if diff.shape[0] > 0:
                         #     std = np.array(diff).std(0).mean()
-                        prev = gray.copy()
-                        # view = gray.copy()
+                        prev = color_modded.copy()
+                        # view = color_modded.copy()
                         # bounding_rect = get_bounding_rect(diff)
                         # diff_size = ((bounding_rect[1][0] - bounding_rect[0][0]) * (
                         #         bounding_rect[1][1] - bounding_rect[0][1]))
