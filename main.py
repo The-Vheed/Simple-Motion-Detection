@@ -7,20 +7,27 @@
 
 # Form implementation generated from reading ui file 'MotionDetector.ui'
 
+import os
+from pathlib import Path
+import PyQt5
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import cv2
 import numpy as np
 import pygame
 
+os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.fspath(
+    Path(PyQt5.__file__).resolve().parent / "Qt5" / "plugins"
+)
+
 file_name = 'detected'
 cap = cv2.VideoCapture(0)
 comparison_mode = 'gray'
 
-
 diff_thresh = 60
 amt_thresh = 10
 line_width = 2
+
 
 # noinspection PyUnresolvedReferences
 class motiondetect(QtCore.QObject):
@@ -41,7 +48,7 @@ class motiondetect(QtCore.QObject):
         pygame.mixer.music.load('assets/beep.wav')
 
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(str(file_name)+'.avi', fourcc, 30.0, (640, 480))
+        out = cv2.VideoWriter(str(file_name) + '.avi', fourcc, 30.0, (640, 480))
 
         def difference(array1: np.array, array2: np.array):
             diffs = []
@@ -61,7 +68,8 @@ class motiondetect(QtCore.QObject):
                 thresh = ui.diff_thresh_slider.sliderPosition()
                 for y in range(len(list1)):
                     for x in range(len(list1[y])):
-                        diff = abs(list1[y][x][0] - list2[y][x][0])+abs(list1[y][x][1] - list2[y][x][1])+abs(list1[y][x][2] - list2[y][x][2])
+                        diff = abs(list1[y][x][0] - list2[y][x][0]) + abs(list1[y][x][1] - list2[y][x][1]) + abs(
+                            list1[y][x][2] - list2[y][x][2])
                         if diff > thresh:
                             diffs.append([y, x])
 

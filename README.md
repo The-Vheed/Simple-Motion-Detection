@@ -17,7 +17,7 @@ Explanatory code _Comments_ would added soon.
 ## Features
 - All detected movements or changes are saved in a '_detected.avi_' file in the same directory as the script 
 
-- Sensitivity can easily be adjusted using the gui using multiple parameters
+- Sensitivity can easily be adjusted using the gui containing multiple parameters
 
 - IP Cameras can also be easily integrated with the code for seamless motion detection and automated recording
 
@@ -42,17 +42,17 @@ Explanatory code _Comments_ would added soon.
 
 ## Notes
 
-- The output filename can be changed by changing the '_file_name_' variable in line 16 of '_main.py_' without adding any file extension;
+- The output filename can be changed by changing the '_file_name_' variable in line 23 of '_main.py_' without adding any file extension;
   ```python
   file_name = '<filename>'
   ```
 
-- The video source can be changed by giving the chosen camera index, video source file, or network stream in '_main.py_' in line 17;
-    ```python
-    cap = cv2.VideoCapture('<source>')
-    ```
+- The video source can be changed by giving the chosen camera index, video source file, or network stream in '_main.py_' in line 24;
+  ```python
+  cap = cv2.VideoCapture('<source>')
+  ```
 
-- The frame comparison mode can also be changed to color comparison by changing the '_comparison_mode_' variable in line 18 from '_gray_' to '_color_';
+- The frame comparison mode can also be changed to color comparison by changing the '_comparison_mode_' variable in line 25 from '_gray_' to '_color_';
   ```python
   comparison_mode = '<mode>'
   ```
