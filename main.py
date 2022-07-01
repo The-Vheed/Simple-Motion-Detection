@@ -9,11 +9,17 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+import cv2
+import numpy as np
+import pygame
+
+file_name = 'detected'
+cap = cv2.VideoCapture(0)
+
 
 diff_thresh = 60
 amt_thresh = 10
 line_width = 2
-
 
 # noinspection PyUnresolvedReferences
 class motiondetect(QtCore.QObject):
@@ -27,18 +33,14 @@ class motiondetect(QtCore.QObject):
 
     @QtCore.pyqtSlot()
     def detect(self):
-        import numpy as np
-        import cv2
-        import pygame
 
         pygame.init()
 
-        cap = cv2.VideoCapture(0)
         # Loading and playing background music:
         pygame.mixer.music.load('assets/beep.wav')
 
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter('detected.avi', fourcc, 30.0, (640, 480))
+        out = cv2.VideoWriter(str(file_name)+'.avi', fourcc, 30.0, (640, 480))
 
         # ...some more of your code goes here...
 
