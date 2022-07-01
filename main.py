@@ -54,7 +54,7 @@ class motiondetect(QtCore.QObject):
             diffs = []
             list1 = array1.tolist()
             list2 = array2.tolist()
-            if comparison_mode == 'color_modded':
+            if comparison_mode == 'grey':
                 thresh = ui.diff_thresh_slider.sliderPosition()
                 for y in range(len(list1)):
                     for x in range(len(list1[y])):
