@@ -67,7 +67,7 @@ class motiondetect(QtCore.QObject):
                 img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
                 frame = cv2.imdecode(img_arr, -1)
                 ret = True
-            return (ret, frame)
+            return ret, frame
 
         def difference(array1: np.array, array2: np.array):
             diffs = []
