@@ -16,13 +16,21 @@ import cv2
 import numpy as np
 import pygame
 
+import requests
+
 os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.fspath(
     Path(PyQt5.__file__).resolve().parent / "Qt5" / "plugins"
 )
 
+# Cam index, e.g: 0 or url, e.g: "http://192.168.164.103:8080/shot.jpg"
+source = 0
+
 file_name = 'detected'
-cap = cv2.VideoCapture(0)
+
 comparison_mode = 'grey'
+
+if type(source) == int:
+    cap = cv2.VideoCapture(source)
 
 diff_thresh = 60
 amt_thresh = 10
@@ -49,6 +57,17 @@ class motiondetect(QtCore.QObject):
 
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
         out = cv2.VideoWriter(str(file_name) + '.avi', fourcc, 30.0, (640, 480))
+
+        def fetchframe(source):
+
+            if type(source) == int:
+                ret, frame = cap.read()
+            else:
+                img_resp = requests.get(url)
+                img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
+                frame = cv2.imdecode(img_arr, -1)
+                ret = True
+            return (ret, frame)
 
         def difference(array1: np.array, array2: np.array):
             diffs = []
@@ -97,14 +116,15 @@ class motiondetect(QtCore.QObject):
                     y2 = list1[i][0]
                 if list1[i][0] < y1:
                     y1 = list1[i][0]
-            # print([(x1, y1), (x2, y2)])
             return [(x1, y1), (x2, y2)]
 
         prev = 0
         count = 0
         playing = False
         numofdetections = 0
-        ret, frame = cap.read()
+
+        ret, frame = fetchframe(source)
+
         self.size = frame.size / 75
         self.amt_thresh = amt_thresh
 
@@ -112,13 +132,14 @@ class motiondetect(QtCore.QObject):
             try:
                 count += 1
                 # Capture frame-by-frame
-                ret, frame = cap.read()
+
+                ret, frame = fetchframe(source)
+
                 view = frame
-                # Our operations on the frame come here
-                # Display the resulting frame
+                # Operations on the frame come here
                 if ret:
                     if comparison_mode == 'grey':
-                        color_modded = cv2.cvtColor(frame, cv2.COLOR_BGR2color_modded)
+                        color_modded = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                     else:
                         color_modded = frame.copy()
                     if count == 1:
