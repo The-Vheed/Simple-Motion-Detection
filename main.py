@@ -63,7 +63,7 @@ class motiondetect(QtCore.QObject):
             if type(source) == int:
                 ret, frame = cap.read()
             else:
-                img_resp = requests.get(sourc)
+                img_resp = requests.get(source)
                 img_arr = np.array(bytearray(img_resp.content), dtype=np.uint8)
                 frame = cv2.imdecode(img_arr, -1)
                 ret = True
