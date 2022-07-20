@@ -23,7 +23,7 @@ os.environ["QT_QPA_PLATFORM_PLUGIN_PATH"] = os.fspath(
 )
 
 # Cam index, e.g: 0 or url, e.g: "http://192.168.164.103:8080/shot.jpg"
-source = 0
+source = 2
 
 file_name = 'detected'
 
