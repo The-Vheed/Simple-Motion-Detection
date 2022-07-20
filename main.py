@@ -59,8 +59,7 @@ class motiondetect(QtCore.QObject):
         out = cv2.VideoWriter(str(file_name) + '.avi', fourcc, 30.0, (640, 480))
 
         def fetchframe(source):
-
-            if type(source) == int:
+            if type(source) == int or (type(source) == str and (source[-4:] == '.mp4')):
                 ret, frame = cap.read()
             else:
                 img_resp = requests.get(source)
